@@ -1,31 +1,13 @@
 const router = require('express').Router();
 
-const {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser,
-  addFriend,
-  removeFriend
-} = require('../../controllers/user-controller');
+// Import all of the API routes from /api/index.js (no need for index.js though since it's implied)
+const apiRoutes = require('./api');
 
-// Set up GET all and POST at /api/user
-router
-  .route('/')
-  .get(getAllUsers)
-  .post(createUser);
+// add prefix of `/api` to all of the api routes imported from the `api` directory
+router.use('/api', apiRoutes);
 
-router
-  .route('/:id')
-  .get(getUserById)
-  .put(updateUser)
-  .delete(deleteUser);
-
-router
-  .route('/:id/friends/:friendId')
-  .post(addFriend)
-  .delete(removeFriend)
-
+router.use((req, res) => {
+  res.status(404).send('<h1>😝 404 Error!</h1>');
+});
 
 module.exports = router;
